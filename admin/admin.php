@@ -1,8 +1,7 @@
 <?php
 require_once GP3_PLUGIN_DIR . '/admin/pages/api_key_list.php';
 // require_once GP3_PLUGIN_DIR . '/admin/pages/register_api_key.php';
-
-
+require_once GP3_PLUGIN_DIR . '/includes/payjp-interface.php';
 
 // 管理画面を表示している場合のみ実行します。
 if( !is_admin() ) {
@@ -125,8 +124,30 @@ function my_sub_menu () {
     <?php
 }
 
-add_action( 'admin_init', 'post_api_key' );
+add_action( 'admin_init', 'post_register_api_key_handler' );
+function post_register_api_key_handler() {
+    // var_dump($_POST);
+    if ( isset( $_POST['create_api_key'] ) ) {
+        post_api_key();
+    } elseif( isset( $_POST['test_api_key'] ) ) {
+        test_api_key();
+    }
+}
+
+function test_api_key() {
+
+    $payjp_util = new GP3_Payjp_Util();
+    $res = $payjp_util->test_communicate_to_payjp();
+    if ( isset($res['error']) ) {
+        wp_die( $res['error']['message'] );
+    } else {
+        // FIXME テストがうまく行った時の処理を入れる
+    }
+
+}
+
 function post_api_key() {
+
     // list とる
     $api_key_list = get_option( 'gp3_api_keys', array() );
     if ( isset( $_POST['my_sub_menu'] ) && $_POST['my_sub_menu'] ) {

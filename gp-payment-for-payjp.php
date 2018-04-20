@@ -25,3 +25,6 @@ register_activation_hook( __FILE__,     array( 'GP3', 'gp3_activate' ) );
 register_deactivation_hook( __FILE__,   array( 'GP3', 'gp3_deactivate' ) );
 
 require_once GP3_PLUGIN_DIR . '/admin/admin.php';
+require_once GP3_PLUGIN_DIR . '/vendor/autoload.php';
+require_once GP3_PLUGIN_DIR . '/includes/payjp-interface.php';
+require_once GP3_PLUGIN_DIR . '/rest/gp4_rest_controller.php';
