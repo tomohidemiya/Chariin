@@ -49,6 +49,8 @@ jQuery('#gp4-form-button').on('click', function(e) {
 
         console.log('start ajax');
         var data = {
+            'user_id': jQuery('#gp4-pay-form [name=user_id]').val(),
+            'test_mode': jQuery('#gp4-pay-form [name=test_mode]').val(),
             'c_number': jQuery('#gp4-pay-form [name=c_number]').val(),
             'exp_year': jQuery('#gp4-pay-form [name=exp_year]').val(),
             'exp_month': jQuery('#gp4-pay-form [name=exp_month]').val(),
@@ -73,6 +75,7 @@ jQuery('#gp4-form-button').on('click', function(e) {
         }).fail( function( jqXHR, textStatus, errorThrown ) {
             // 一旦アラート出す
             alert('問題が発生しました！\n' + jqXHR);
+            console.log(jqXHR);
             jQuery('input').attr('disabled', 'null');
         }).always( function( data_or_jqXHR, textStatus, jqXHR_or_errorThrown ) {
             gp4Loading = false;
