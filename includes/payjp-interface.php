@@ -27,7 +27,7 @@ class GP3_Payjp_Util {
             // $user_id = get_current_user_id();
             // if (user_mmetadata) {
             // }
-            $myCard = array('number' => '4242424242424242', 'cvc' => '123', 'exp_month' => 5, 'exp_year' => 2020);
+            $myCard = array( 'number' => '4242424242424242', 'cvc' => '123', 'exp_month' => 5, 'exp_year' => 2020 );
             $charge = \Payjp\Charge::create( array(
                 'card' => $myCard,
                 'amount' => 5000,

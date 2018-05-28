@@ -86,30 +86,38 @@
 			$is_prod = true;
 		}
 
-		$payjp_util = new GP3_Payjp_Util();
-		if ($is_prod) {
-			$ch = $payjp_util->create_pay($number, $card_exp_month, $card_exp_year, $amount);
-		} else {
-			$ch = $payjp_util->test_communicate_to_payjp();
-		}
-
 		$response = new WP_REST_Response();
-		$response->set_status(200);
-		$domain = (empty($_SERVER["HTTPS"]) ? "http://" : "https://") . $_SERVER["HTTP_HOST"];
-		$response->header( 'Location', $domain );
+		try {
+			$payjp_util = new GP3_Payjp_Util();
+			if ($is_prod) {
+				$ch = $payjp_util->create_pay( $number, $card_exp_month, $card_exp_year, $amount );
+			} else {
+				$ch = $payjp_util->test_communicate_to_payjp();
+			}
+			$response->set_status(200);
+			$domain = ( empty( $_SERVER["HTTPS"] ) ? "http://" : "https://" ) . $_SERVER["HTTP_HOST"];
+			$response->header( 'Location', $domain );
+			$response->set_data( gp4_create_res_data( $user_id ) );
+			send_mail();
 
-		$response->set_data(gp4_create_res_data($user_id));
-		send_mail();
+		} catch( Exception $e ) {
+			$response->set_status(500);
+			$domain = ( empty( $_SERVER["HTTPS"] ) ? "http://" : "https://" ) . $_SERVER["HTTP_HOST"];
+			$response->header( 'Location', $domain );
+			$response->set_data( gp4_create_res_data( $user_id ) );
+		} finally {
+
+		}
 		return $response;
 	}
 
-	function gp4_create_res_data($ch) {
+	function gp4_create_res_data( $ch ) {
 		$data = array(
 			'pay' => array(
 				'hoge' => $ch
 			)
 		);
-		return $data;
+		return json_encode($data);
 	}
 
 	function send_mail() {
