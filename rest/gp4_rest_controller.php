@@ -73,7 +73,7 @@
 		//何かしらの処理
 		// input configuration
 		$post_req = $request["POST"];
-		$user_id = (int)$post_req["c_number"];
+		$user_id = (int)$post_req["user_id"];
 		$card_num = $post_req["c_number"];
 		$card_exp_year = (int)$post_req["exp_year"];
 		$card_exp_month = (int)$post_req["exp_month"];
@@ -90,6 +90,7 @@
 		try {
 			$payjp_util = new GP3_Payjp_Util();
 			if ($is_prod) {
+				// FIXME なぜか必ず200が帰る。。。
 				$ch = $payjp_util->create_pay( $number, $card_exp_month, $card_exp_year, $amount );
 			} else {
 				$ch = $payjp_util->test_communicate_to_payjp();
@@ -97,6 +98,7 @@
 			$response->set_status(200);
 			$domain = ( empty( $_SERVER["HTTPS"] ) ? "http://" : "https://" ) . $_SERVER["HTTP_HOST"];
 			$response->header( 'Location', $domain );
+			// TODO 適切な内容に変える
 			$response->set_data( gp4_create_res_data( $user_id ) );
 			send_mail();
 

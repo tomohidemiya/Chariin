@@ -21,9 +21,11 @@ add_shortcode( "gp4-form" , "gp4_form_short_code" );
 
 function gp4_form_script() {
 
+
+    // 変数にする
     wp_enqueue_script(
         'custom-script',
-        plugins_url( 'gp-payment-for-payjp', 'gp-payment-for-payjp' ) . '/scripts/main.js',
+        plugins_url( 'gp-payment', 'gp-payment' ) . '/scripts/main.js',
         array( 'jquery' ),
         '1.0',
         true

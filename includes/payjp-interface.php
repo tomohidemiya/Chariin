@@ -9,16 +9,16 @@ class GP3_Payjp_Util {
         $test_key_name = $this->get_test_prv_key();
         // $user_email = '';
         // $user_name = '';
-        $user_id = get_current_user_id();
+        // $user_id = get_current_user_id();
 
-        if (is_user_logged_in()) {
-            $user = wp_get_current_user();
-            // $user_email = $user->user_email;
-            // $user_name = $user->user_login;
-            $user_id = $user->ID;
-        }
+        // if (is_user_logged_in()) {
+        //     $user = wp_get_current_user();
+        //     // $user_email = $user->user_email;
+        //     // $user_name = $user->user_login;
+        //     $user_id = $user->ID;
+        // }
 
-        $user_id = get_current_user_id();
+        // $user_id = get_current_user_id();
 
         \Payjp\Payjp::setApiKey($test_key_name);
         try {
@@ -34,7 +34,7 @@ class GP3_Payjp_Util {
                 'currency' => 'jpy',
                 'capture' => false,
                 'expiry_days' => 1,
-                'description' => $user_id,
+                'description' => 1,
             ) );
 
             if ( $charge['card']['cvc_check'] !== 'passed' && $charge['card']['cvc_check'] !== 'unchecked' ) {
@@ -51,7 +51,7 @@ class GP3_Payjp_Util {
     }
 
 
-    public function create_pay(string $number, int $exp_month, int $exp_year, int $amount) {
+    public function create_pay(int $user_id, string $number, int $exp_month, int $exp_year, int $amount) {
         $key_name = $this->get_prv_key();
 
         \Payjp\Payjp::setApiKey($key_name);
@@ -63,6 +63,7 @@ class GP3_Payjp_Util {
                 'currency' => 'jpy',
                 'capture' => false,
                 'expiry_days' => 1,
+                'description' => $user_id,
             ));
             if ( $charge['card']['cvc_check'] !== 'passed' ) {
                 return array('error' => array('code' => 'invalid_cvc', 'message' => 'セキュリティコードが確認できませんでした。再度ご確認下さい'));
