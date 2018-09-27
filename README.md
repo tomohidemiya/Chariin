@@ -1,3 +1,3 @@
-# gp-payment
+# Chariin
 
-gp-payment is 
+Chariin is 
