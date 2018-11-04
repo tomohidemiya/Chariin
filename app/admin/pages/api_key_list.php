@@ -9,7 +9,7 @@ if(!class_exists('WP_List_Table')){
 * This class composes the page of 'regist api key' page.
 *
 */
-class GP3_Api_Key_List_Table extends WP_List_Table {
+class A4N_PAY_Api_Key_List_Table extends WP_List_Table {
 
 
 	/**
@@ -17,8 +17,8 @@ class GP3_Api_Key_List_Table extends WP_List_Table {
 	 */
 	public function __construct( $args = array() ) {
         parent::__construct( array(
-			'singular' => 'gp3_key',
-			'plural'   => 'gp3_keys',
+			'singular' => 'a4n_pay_key',
+			'plural'   => 'a4n_pay_keys',
 			'ajax'     => false,
 	    ) );
 	}
@@ -80,27 +80,27 @@ class GP3_Api_Key_List_Table extends WP_List_Table {
 		//Detect when a bulk action is being triggered...
 		if( 'delete'===$this->current_action() ) {
 
-			$target_key_list = get_option( 'gp3_api_keys' );
+			$target_key_list = get_option( 'a4n_pay_api_keys' );
 
 			$new_array = array_filter( $target_key_list, function( $item ) {
 				return $_REQUEST[ 'key_type' ] != $item[ 'key_type' ];
 			} );
 
-			update_option( 'gp3_api_keys', $new_array );
+			update_option( 'a4n_pay_api_keys', $new_array );
 
 			wp_die( '項目が削除されました。' );
 		} elseif ( 'edit'===$this->current_action() ) {
 
 
 		} elseif ( 'delete-selected'===$this->current_action() ) {
-			$target_key_list = get_option( 'gp3_api_keys' );
+			$target_key_list = get_option( 'a4n_pay_api_keys' );
 
 			$new_array = array_filter( $target_key_list, function( $item ) {
 				$exist_key = array_search( $item[ 'key_type' ],  $_REQUEST[ 'checked' ]);
 				return $exist_key === false;
 			} );
 
-			update_option( 'gp3_api_keys', $new_array );
+			update_option( 'a4n_pay_api_keys', $new_array );
 
 			wp_die( '項目が削除されました。' );
 		}

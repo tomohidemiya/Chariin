@@ -1,15 +1,15 @@
 <?php
-require_once GP3_PLUGIN_DIR . '/admin/pages/api_key_list.php';
-// require_once GP3_PLUGIN_DIR . '/admin/pages/register_api_key.php';
-require_once GP3_PLUGIN_DIR . '/includes/payjp-interface.php';
+require_once A4N_PAY_PLUGIN_DIR . '/admin/pages/api_key_list.php';
+// require_once A4N_PAY_PLUGIN_DIR . '/admin/pages/register_api_key.php';
+require_once A4N_PAY_PLUGIN_DIR . '/includes/payjp-interface.php';
 
 // 管理画面を表示している場合のみ実行します。
 if( !is_admin() ) {
     return;
 }
 
-add_action( 'admin_menu', 'gp3_admin_menu' );
-function gp3_admin_menu () {
+add_action( 'admin_menu', 'a4n_admin_menu' );
+function a4n_admin_menu () {
     add_menu_page(
         __('Payment', 'my-custom-admin'),
         __('Payment', 'my-custom-admin'),
@@ -24,7 +24,7 @@ function gp3_admin_menu () {
         __('APIキーリスト', 'my-custom-admin'),
         'manage_options',
         'gp3-key-list-menu',
-        'gp3_key_list_menu'
+        'a4n_pay_key_list_menu'
      );
 
      add_submenu_page(
@@ -93,7 +93,7 @@ function my_sub_menu () {
         <form id="api_key_form" method="post" action="">
             <?php
                 wp_nonce_field( 'my-nonce-key', 'my_sub_menu' );
-                $registered_api_keys = get_option( 'gp3_api_keys' );
+                $registered_api_keys = get_option( 'a4n_pay_api_keys' );
             ?>
             <table class="form-table">
                 <tbody>
@@ -136,7 +136,7 @@ function post_register_api_key_handler() {
 
 function test_api_key() {
 
-    $payjp_util = new GP3_Payjp_Util();
+    $payjp_util = new A4N_PAY_Payjp_Util();
     $res = $payjp_util->test_communicate_to_payjp();
     if ( isset($res['error']) ) {
         wp_die( $res['error']['message'] );
@@ -149,7 +149,7 @@ function test_api_key() {
 function post_api_key() {
 
     // list とる
-    $api_key_list = get_option( 'gp3_api_keys', array() );
+    $api_key_list = get_option( 'a4n_pay_api_keys', array() );
     if ( isset( $_POST['my_sub_menu'] ) && $_POST['my_sub_menu'] ) {
 
         if ( check_admin_referer( 'my-nonce-key', 'my_sub_menu' ) ) {
@@ -176,7 +176,7 @@ function post_api_key() {
                     'key_name' => $_POST['key_name'],
                 );
                 array_push( $api_key_list, $input_array );
-                update_option( 'gp3_api_keys', $api_key_list, true );
+                update_option( 'a4n_pay_api_keys', $api_key_list, true );
 
                 wp_safe_redirect( menu_page_url( 'gp3-key-list-menu', false ) );
 
@@ -207,7 +207,7 @@ function add_error_notices() {
 <?php
 }
 
-function gp3_key_list_menu() {
+function a4n_pay_key_list_menu() {
 
 
     ?>
@@ -222,10 +222,10 @@ function gp3_key_list_menu() {
 
         <?php
             // todo prepare_itemsの引数
-            $api_key_list = get_option( 'gp3_api_keys' );
-            $gp3_api_key_list = new GP3_Api_Key_List_Table();
-            $gp3_api_key_list->prepare_items( $api_key_list );
-            $gp3_api_key_list->display();
+            $api_key_list = get_option( 'a4n_pay_api_keys' );
+            $a4n_api_key_list = new A4N_PAY_Api_Key_List_Table();
+            $a4n_api_key_list->prepare_items( $api_key_list );
+            $a4n_api_key_list->display();
         ?>
     </div>
     <?php

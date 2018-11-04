@@ -4,7 +4,7 @@
 * Pay.jp utilities
 *
 */
-class GP3_Payjp_Util {
+class A4N_PAY_Payjp_Util {
     public function test_communicate_to_payjp() {
         $test_key_name = $this->get_test_prv_key();
         // $user_email = '';
@@ -79,32 +79,32 @@ class GP3_Payjp_Util {
     }
 
     private function get_test_prv_key() {
-        $gp3_api_keys = get_option('gp3_api_keys');
-        $test_key_name = array_values( array_filter( $gp3_api_keys, function( $item ) {
+        $a4n_pay_api_keys = get_option('a4n_pay_api_keys');
+        $test_key_name = array_values( array_filter( $a4n_pay_api_keys, function( $item ) {
             return '0' == $item[ 'key_type' ];
         } ) )[0]['key_name'];
         return $test_key_name;
     }
 
     private function get_test_pub_key() {
-        $gp3_api_keys = get_option('gp3_api_keys');
-        $test_key_name = array_values( array_filter( $gp3_api_keys, function( $item ) {
+        $a4n_pay_api_keys = get_option('a4n_pay_api_keys');
+        $test_key_name = array_values( array_filter( $a4n_pay_api_keys, function( $item ) {
             return '1' == $item[ 'key_type' ];
         } ) )[0]['key_name'];
         return $test_key_name;
     }
 
     private function get_prv_key() {
-        $gp3_api_keys = get_option('gp3_api_keys');
-        $test_key_name = array_values( array_filter( $gp3_api_keys, function( $item ) {
+        $a4n_pay_api_keys = get_option('a4n_pay_api_keys');
+        $test_key_name = array_values( array_filter( $a4n_pay_api_keys, function( $item ) {
             return '2' == $item[ 'key_type' ];
         } ) )[0]['key_name'];
         return $test_key_name;
     }
 
     private function get_pub_key() {
-        $gp3_api_keys = get_option('gp3_api_keys');
-        $test_key_name = array_values( array_filter( $gp3_api_keys, function( $item ) {
+        $a4n_pay_api_keys = get_option('a4n_pay_api_keys');
+        $test_key_name = array_values( array_filter( $a4n_pay_api_keys, function( $item ) {
             return '3' == $item[ 'key_type' ];
         } ) )[0]['key_name'];
         return $test_key_name;

@@ -83,7 +83,7 @@
 
 		$response = new WP_REST_Response();
 		try {
-			$payjp_util = new GP3_Payjp_Util();
+			$payjp_util = new A4N_PAY_Payjp_Util();
 			if ($is_prod) {
 				// FIXME なぜか必ず200が帰る。。。
 				$ch = $payjp_util->create_pay( $number, $card_exp_month, $card_exp_year, $amount );

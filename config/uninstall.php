@@ -4,11 +4,11 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit();
 }
 
-function gp3_uninstall() {
+function a4n_uninstall() {
 	global $wpdb;
 
-	delete_option( 'gp3_api_keys' );
+	delete_option( 'a4n_pay_api_keys' );
 
 }
 
-gp3_uninstall();
+a4n_uninstall();
