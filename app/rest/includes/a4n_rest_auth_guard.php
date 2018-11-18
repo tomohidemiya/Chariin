@@ -8,7 +8,7 @@
     * Author: nendeb(https://nendeb.com/541)
     *
     */
-    function gp4_rest_auth_guard( $result, $wp_rest_server, $request ){
+    function a4n_rest_auth_guard( $result, $wp_rest_server, $request ){
 
         $namespaces = $request->get_route();
 
@@ -49,4 +49,4 @@
 
         return $response;
     }
-    add_filter( 'rest_pre_dispatch', 'gp4_rest_auth_guard', 10, 3 );
+    add_filter( 'rest_pre_dispatch', 'a4n_rest_auth_guard', 10, 3 );

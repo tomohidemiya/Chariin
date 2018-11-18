@@ -33,7 +33,7 @@
 			$domain = ( empty( $_SERVER["HTTPS"] ) ? "http://" : "https://" ) . $_SERVER["HTTP_HOST"];
 			$response->header( 'Location', $domain );
 			// TODO 適切な内容に変える
-			$response->set_data( gp4_create_res_data( $user_id ) );
+			$response->set_data( a4n_create_res_data( $user_id ) );
 
 			// アーキテクチャを考える
 			send_mail();
@@ -42,14 +42,14 @@
 			$response->set_status(500);
 			$domain = ( empty( $_SERVER["HTTPS"] ) ? "http://" : "https://" ) . $_SERVER["HTTP_HOST"];
 			$response->header( 'Location', $domain );
-			$response->set_data( gp4_create_res_data( $user_id ) );
+			$response->set_data( a4n_create_res_data( $user_id ) );
 		} finally {
 
 		}
 		return $response;
 	}
 
-	function gp4_create_res_data( $ch ) {
+	function a4n_create_res_data( $ch ) {
 		$data = array(
 			'pay' => array(
 				'hoge' => $ch

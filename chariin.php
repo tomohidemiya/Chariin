@@ -1,15 +1,15 @@
 <?php
 /**
- * Plugin Name: GermanSuPress-Payment for Pay.jp
+ * Plugin Name: Chariin for Pay.jp
  * Plugin URI:  https://XXX.io
  * Description: Add Payment function by Pay.jp to ALL WordPress site.
  * Author:      Tomohide Miya(A4Next inc.)
  * Author URI:  https://xxx.io
  * Version:     0.0.1
- * Text Domain: gp-payment-for-payjp
+ * Text Domain: chariin
  * Domain Path: /i18n
  *
- * @copyright   2018 Tomohide Miya All rights reserved.
+ * @copyright 2018 A4NEXT.inc,. All rights reserved.
  */
 
 define( 'A4N_PAY_VERSION',              '1.0.0' );
