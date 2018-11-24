@@ -1,7 +1,5 @@
 <?php
-	$deposit_route = [
-		
-	];
+
 
     function deposit_handler( WP_REST_Request $request ) {
 		//何かしらの処理
