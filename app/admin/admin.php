@@ -1,7 +1,7 @@
 <?php
-require_once A4N_PAY_PLUGIN_DIR . '/admin/pages/api_key_list.php';
+require_once A4N_PAY_PLUGIN_DIR . '/app/admin/pages/api_key_list.php';
 // require_once A4N_PAY_PLUGIN_DIR . '/admin/pages/register_api_key.php';
-require_once A4N_PAY_PLUGIN_DIR . '/includes/payjp-interface.php';
+require_once A4N_PAY_PLUGIN_DIR . '/app/services/payjp-interface.php';
 
 // 管理画面を表示している場合のみ実行します。
 if( !is_admin() ) {
