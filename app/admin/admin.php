@@ -2,6 +2,7 @@
 require_once A4N_PAY_PLUGIN_DIR . '/app/admin/pages/api_key_list.php';
 // require_once A4N_PAY_PLUGIN_DIR . '/admin/pages/register_api_key.php';
 require_once A4N_PAY_PLUGIN_DIR . '/app/services/payjp-interface.php';
+require_once A4N_PAY_PLUGIN_DIR . '/app/admin/pages/mail_editor.php';
 
 // 管理画面を表示している場合のみ実行します。
 if( !is_admin() ) {
@@ -23,7 +24,7 @@ function a4n_admin_menu () {
         __('APIキーリスト', 'my-custom-admin'),
         __('APIキーリスト', 'my-custom-admin'),
         'manage_options',
-        'gp3-key-list-menu',
+        'a4n-key-list-menu',
         'a4n_pay_key_list_menu'
      );
 
@@ -35,6 +36,16 @@ function a4n_admin_menu () {
         'my-sub-menu',
         'my_sub_menu'
      );
+
+     add_submenu_page(
+        'my-custom-admin',
+        __('メール編集', 'my-custom-admin'),
+        __('メール編集', 'my-custom-admin'),
+        'manage_options',
+        'a4n-chariin-mail-editor',
+        'a4n_chariin_mail_editor'
+     );
+
 }
 function my_custom_admin () {
     ?>
@@ -48,8 +59,9 @@ function my_custom_admin () {
         <div class="card">
 	        <h2 class="title">Pay.jpメニュー</h2>
 	        <ul>
-                <li><a href="/wp-admin/admin.php?page=gp3-key-list-menu">APIキーリスト</a></li>
+                <li><a href="/wp-admin/admin.php?page=a4n-key-list-menu">APIキーリスト</a></li>
                 <li><a href="/wp-admin/admin.php?page=my-sub-menu">APIキー登録</a></li>
+                <li><a href="/wp-admin/admin.php?page=mail-editor">メール編集</a></li>
             </ul>
         </div>
     </div>
@@ -178,7 +190,7 @@ function post_api_key() {
                 array_push( $api_key_list, $input_array );
                 update_option( 'a4n_pay_api_keys', $api_key_list, true );
 
-                wp_safe_redirect( menu_page_url( 'gp3-key-list-menu', false ) );
+                wp_safe_redirect( menu_page_url( 'a4n-key-list-menu', false ) );
 
             }
         }
