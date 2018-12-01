@@ -18,6 +18,27 @@ function a4n_form_short_code( $args ) {
 }
 add_shortcode( "a4n-form" , "a4n_form_short_code" );
 
+
+function checkout_form_short_code() {
+  $str =
+<<<EOD
+<form action="/pay" method="post">
+<script
+type="text/javascript"
+src="https://checkout.pay.jp/"
+class="payjp-button"
+data-key="pk_test_0383a1b8f91e8a6e3ea0e2a9"
+data-on-created="onCreated"
+data-text="カード情報の入力"
+data-submit-text="支払う"
+data-partial="true">
+</script>
+</form>
+EOD;
+  return $str;
+}
+add_shortcode( "checkout" , "checkout_form_short_code" );
+
 function a4n_form_script() {
 
 
