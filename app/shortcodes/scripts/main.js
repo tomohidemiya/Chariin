@@ -16,9 +16,9 @@ jQuery('#a4n_pay_credit').on('click', function(e) {
 
     jQuery('#a4n-form-button').on('click', function(e) {
         e.preventDefault();
-    
+
         console.log('start confirm');
-    
+
         // フォームの非表示と結果表示
         jQuery('#a4n-pay-form').attr('style', 'display:none;');
         jQuery('#a4n-pay-result').html(
@@ -43,24 +43,24 @@ jQuery('#a4n_pay_credit').on('click', function(e) {
                 '</div>' +
             '</div>'
         );
-    
+
         jQuery('#a4n-pay-modify').on('click', function (e) {
             e.preventDefault();
-    
+
             console.log('start modify');
-    
+
             // 修正ボタン押下時は、結果画面を削除してフォームに戻る
             jQuery('#a4n-pay-form').attr('style', 'display:block;');
             jQuery('.a4n_pay_confirm').remove();
         });
-    
+
         jQuery('#a4n-pay-confirm').on('click', function (e) {
             e.preventDefault();
-    
+
             // 確定ボタン押下時は、ローダーを有効にしてボタンを無効化
             jQuery('.a4n_ajax_loader').attr('style', 'display:block');
             jQuery('input').attr('disabled', 'disabled');
-    
+
             console.log('start ajax');
             var data = {
                 'user_id': jQuery('#a4n-pay-form [name=user_id]').val(),
@@ -84,8 +84,8 @@ jQuery('#a4n_pay_credit').on('click', function(e) {
                 jQuery('#a4n-pay-result').html(
                     '<div class="a4n_pay_success">送金が完了しました。</div>'
                 );
-    
-    
+
+
             }).fail( function( jqXHR, textStatus, errorThrown ) {
                 // 一旦アラート出す
                 alert('問題が発生しました！\n' + jqXHR);
@@ -131,7 +131,7 @@ jQuery('#a4n_pay_depositment').on('click', function(e) {
             jQuery('.a4n_pay_confirm').remove();
             jQuery('#a4n-pay-result').html(
                 '<div class="a4n_pay_success">ご入力いただいたメールアドレスに振込情報を送信いたします。<br />'+
-                'メールの到着まで5分程度お待ちください。<br /><br />' + 
+                'メールの到着まで5分程度お待ちください。<br /><br />' +
                 'もし、メールアドレスが間違っていた場合、メールが届かないため、再度入力してください。</div>'
             );
         }).fail( function( jqXHR, textStatus, errorThrown ) {
@@ -145,3 +145,37 @@ jQuery('#a4n_pay_depositment').on('click', function(e) {
     });
 });
 
+
+jQuery('#a4n_checkout_deopsitment').on()('click', function(e){
+    e.preventDefault();
+
+    jQuery('#a4n-pay-form').attr('style', 'display:none;');
+    var data = {
+        'user_id': jQuery('#a4n-pay-form [name=user_id]').val(),
+        'test_mode': jQuery('#a4n-pay-form [name=test_mode]').val(),
+        'email': jQuery('#a4n-pay-form [name=email]').val()
+        'token': jQuery('#a4n-pay-form [name=payjp-token]').val()
+    };
+    jQuery.ajax({
+        'type': 'POST',
+        'url': '/wp-json/gpay/1/pay',
+        'contentType': 'application/json',
+        'data': JSON.stringify(data)
+    }).done( function( response, textStatus, jqXHR ) {
+        // 送金完了画面
+        jQuery('#a4n-pay-form').remove();
+        jQuery('.a4n_pay_confirm').remove();
+        jQuery('#a4n-pay-result').html(
+            '<div class="a4n_pay_success">ただいま決済をしております。<br />'+
+            'メールの到着までしばらくお待ちください。<br /><br />' +
+            'もし、メールアドレスが間違っていた場合、メールが届かないため、再度入力してください。</div>'
+        );
+    }).fail( function( jqXHR, textStatus, errorThrown ) {
+        // 一旦アラート出す
+        alert('問題が発生しました！\n' + jqXHR);
+        console.log(jqXHR);
+        jQuery('input').attr('disabled', 'null');
+    }).always( function( data_or_jqXHR, textStatus, jqXHR_or_errorThrown ) {
+        a4nLoading = false;
+    });
+}
