@@ -5,13 +5,10 @@
 		//何かしらの処理
 		// input configuration
 		$post_req = $request["POST"];
-		$user_id = (int)$post_req["user_id"];
-		$card_num = $post_req["c_number"];
-		$card_exp_year = (int)$post_req["exp_year"];
-		$card_exp_month = (int)$post_req["exp_month"];
-		$card_cvc = (int)$post_req["cvc"];
-		$amount = (int)$post_req["amount"];
-		$card_name = $post_req["name"];
+		
+		$payjp_token = $post_req["token"];
+		$total_price = (int)$post_req["price"];
+		$depo_type = $post_req["deposit_type"];
 		$is_prod = false;
 
 		if ( $post_req["prod_mode"] !== '' && $post_req["prod_mode"] === 'true' ) {
@@ -34,7 +31,7 @@
 			$response->set_data( a4n_create_res_data_deposit( $user_id ) );
 
 			// アーキテクチャを考える
-			send_mail();
+			send_mail_deposit();
 
 		} catch( Exception $e ) {
 			$response->set_status(500);

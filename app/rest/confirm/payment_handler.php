@@ -1,6 +1,6 @@
 <?php
     
-    function payment_handler( WP_REST_Request $request ) {
+    function confirm_handler( WP_REST_Request $request ) {
 		//何かしらの処理
 		// input configuration
 		$post_req = $request["POST"];
