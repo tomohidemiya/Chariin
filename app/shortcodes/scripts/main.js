@@ -153,12 +153,15 @@ jQuery('#a4n_checkout_deopsitment').on()('click', function(e){
     var data = {
         'user_id': jQuery('#a4n-pay-form [name=user_id]').val(),
         'test_mode': jQuery('#a4n-pay-form [name=test_mode]').val(),
-        'email': jQuery('#a4n-pay-form [name=email]').val()
-        'token': jQuery('#a4n-pay-form [name=payjp-token]').val()
+        'email': jQuery('#a4n-pay-form [name=email]').val(),
+        'token': jQuery('#a4n-pay-form [name=payjp-token]').val(),
+        'price': jQuery('#a4n-pay-form [name=price]').val(),
+        'deposit_type': "01"
+
     };
     jQuery.ajax({
         'type': 'POST',
-        'url': '/wp-json/gpay/1/pay',
+        'url': '/wp-json/Chariin/1/depo',
         'contentType': 'application/json',
         'data': JSON.stringify(data)
     }).done( function( response, textStatus, jqXHR ) {
