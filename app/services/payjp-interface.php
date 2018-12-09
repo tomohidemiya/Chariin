@@ -50,6 +50,30 @@ class A4N_PAY_Payjp_Util {
         return $ch;
     }
 
+    public function deposit_payment(string $token, int $total_price, string $depo_type) {
+        $key_name = $this->get_prv_key();
+        \Payjp\Payjp::setApiKey($key_name);
+
+        try {
+            $charge = \Payjp\Charge::create(array(
+                'card' => $token,
+                'amount' => $total_price,
+                'currency' => 'jpy', // その内なおす
+                'capture' => false,
+                'expiry_days' => 1,
+                'description' => $depo_type,
+            ));
+            $ch = \Payjp\Charge::retrieve($charge['id']);
+            $ch->capture();
+        } catch(Exception $e) {
+            // var_dump($e);
+            return $e->jsonBody;
+        }
+
+        return $ch;
+
+    }
+
 
     public function create_pay(int $user_id, string $number, int $exp_month, int $exp_year, int $amount) {
         $key_name = $this->get_prv_key();

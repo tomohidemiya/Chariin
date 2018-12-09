@@ -27,7 +27,7 @@
             return $result;
         }
 
-        if ( strpos( $namespaces, 'gpay/' ) === 1 ) {
+        if ( strpos( $namespaces, 'chariin/' ) === 1 ) {
             // if ( is_user_logged_in() ) {
                 return $result;
             // }
