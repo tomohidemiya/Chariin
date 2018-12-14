@@ -145,40 +145,49 @@ jQuery('#a4n_pay_depositment').on('click', function(e) {
     });
 });
 
-
-jQuery('#a4n_checkout_deopsitment').on()('click', function(e){
-    e.preventDefault();
-
-    jQuery('#a4n-pay-form').attr('style', 'display:none;');
-    var data = {
-        'user_id': jQuery('#a4n-pay-form [name=user_id]').val(),
-        'test_mode': jQuery('#a4n-pay-form [name=test_mode]').val(),
-        'email': jQuery('#a4n-pay-form [name=email]').val(),
-        'token': jQuery('#a4n-pay-form [name=payjp-token]').val(),
-        'price': jQuery('#a4n-pay-form [name=price]').val(),
-        'deposit_type': "01"
-
-    };
-    jQuery.ajax({
-        'type': 'POST',
-        'url': '/wp-json/Chariin/1/depo',
-        'contentType': 'application/json',
-        'data': JSON.stringify(data)
-    }).done( function( response, textStatus, jqXHR ) {
-        // 送金完了画面
-        jQuery('#a4n-pay-form').remove();
-        jQuery('.a4n_pay_confirm').remove();
-        jQuery('#a4n-pay-result').html(
-            '<div class="a4n_pay_success">ただいま決済をしております。<br />'+
-            'メールの到着までしばらくお待ちください。<br /><br />' +
-            'もし、メールアドレスが間違っていた場合、メールが届かないため、再度入力してください。</div>'
-        );
-    }).fail( function( jqXHR, textStatus, errorThrown ) {
-        // 一旦アラート出す
-        alert('問題が発生しました！\n' + jqXHR);
-        console.log(jqXHR);
-        jQuery('input').attr('disabled', 'null');
-    }).always( function( data_or_jqXHR, textStatus, jqXHR_or_errorThrown ) {
-        a4nLoading = false;
-    });
-}
+//   /*#####################################################
+//      input[type="hidden"]の要素の value値に変更があった場合
+//      change イベントを発火させる
+//   #####################################################*/
+//
+//   const
+//     option = {
+//       attributes      : true,
+//       attributeFilter : ['value']
+//     },
+//
+//
+//     handler =
+//       function ([mutation]) {
+//         let
+//           target = mutation.target,
+//           doc    = target.ownerDocument,
+//           event  = doc.createEvent ('HTMLEvents');
+//         event.initEvent ('change', true, true);
+//         target.dispatchEvent (event);
+//       };
+//
+//   class AddChangeEvent {
+//     constructor (element = null) {
+//       if (null === element)
+//         throw new Error ('要素がありません');
+//
+//       let observer = new MutationObserver (handler);
+//       observer.observe (element, option);
+//
+//       this.observer = observer;
+//     }
+//   }
+//   this.AddChangeEvent = AddChangeEvent;
+//
+// let
+//   fm = document.querySelector ('form'),
+//   hide = fm.elements['payjp-token'];
+//
+// //changeイベントは、form要素で監視する
+// fm.addEventListener ('change', function (event) {
+//   //ここにajex通信処理を載せる予定
+//   let e = event.target;
+//   alert ([e.name, e.value]);
+//  }, false);
+//  new AddChangeEvent (hide);
