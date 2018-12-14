@@ -31,7 +31,7 @@ data-key="pk_test_0383a1b8f91e8a6e3ea0e2a9"
 data-on-created="onCreated"
 data-text="カード情報の入力"
 data-submit-text="支払う"
-data-partial="true">
+data-partial="false">
 </script>
 </form>
 EOD;
@@ -45,7 +45,7 @@ function a4n_form_script() {
     // 変数にする
     wp_enqueue_script(
         'custom-script',
-        plugins_url( 'gp-payment', 'gp-payment' ) . '/shortcode/scripts/main.js',
+        plugins_url( 'Chariin', 'Chariin' ) . '/app/shortcodes/scripts/main.js',
         array( 'jquery' ),
         '1.0',
         true
