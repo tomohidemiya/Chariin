@@ -34,6 +34,13 @@ data-submit-text="支払う"
 data-partial="false">
 </script>
 </form>
+<p>
+ご感想：<br>
+<textarea name="kanso" rows="4" cols="40"></textarea>
+</p>
+<p>
+<input type="submit" value="送信"><input type="reset" value="リセット">
+</p>
 EOD;
   return $str;
 }
