@@ -8,14 +8,23 @@ class A4N_C_MailUtil {
     public function __constructor() {
         $mail_confirm = new A4n_Mail();
         $mail_deposit = new A4n_Mail();
+
+        //the_postでデータロード
+
     }
 
     public function initialise_mail_templates() {
         
     }
 
-    public function update_mail_template() {
+    public function update_mail_template($category, $from, $cc, $bcc, $subject, $body) {
+        if( $category == 'deposit' ) {
 
+        } elseif ( $category == 'confirm' ) {
+
+        } else {
+            return;
+        }
     }
 
     public function insert_mail_template() {
@@ -26,7 +35,7 @@ class A4N_C_MailUtil {
 
     }
 
-    public function send_mail_sync() {
+    public function send_mail_sync($category, $to) {
 
     }
     

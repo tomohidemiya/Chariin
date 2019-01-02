@@ -170,7 +170,6 @@ class A4N_PAY_Api_Key_List_Table extends WP_List_Table {
 			'delete' => sprintf('<a href="?page=%s&action=%s&key_type=%s">削除する</a>',$_REQUEST['page'],'delete',$type),
 		);
 
-
 		$type_name = '';
 		switch ( $type ) {
 			case '0':

@@ -12,6 +12,10 @@ function a4n_post_update_mail_template() {
 			$mail_body = $_POST['a4n_mail_content'];
 			// $headers = $_POST['a4n_mail_additional_headers'];
 			// $attach = $_POST['a4n_mail_attachments'];
+
+			$mail_util = new A4N_C_MailUtil();
+			$mail_util->update_mail_template($category, $from, $cc, $bcc, $subject, $mail_body);
+
 		} else {
 			// GETの時の処理をする（これはいらんか）
 
