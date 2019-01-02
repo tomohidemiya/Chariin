@@ -1,7 +1,7 @@
 <?php
 require_once A4N_PAY_PLUGIN_DIR . '/app/admin/pages/api_key_list.php';
 // require_once A4N_PAY_PLUGIN_DIR . '/admin/pages/register_api_key.php';
-require_once A4N_PAY_PLUGIN_DIR . '/app/services/payjp-interface.php';
+require_once A4N_PAY_PLUGIN_DIR . '/app/includes/payjp-interface.php';
 require_once A4N_PAY_PLUGIN_DIR . '/app/admin/pages/mail_editor.php';
 
 // 管理画面を表示している場合のみ実行します。
@@ -59,8 +59,8 @@ function my_custom_admin () {
         <div class="card">
 	        <h2 class="title">Pay.jpメニュー</h2>
 	        <ul>
-                <li><a href="/wp-admin/admin.php?page=a4n-key-list-menu">APIキーリスト</a></li>
-                <li><a href="/wp-admin/admin.php?page=my-sub-menu">APIキー登録</a></li>
+                <li><a href="/wp-admin/admin.php?page=a4n-key-list-menu">APIキーの登録</a></li>
+                <!-- <li><a href="/wp-admin/admin.php?page=my-sub-menu">APIキー登録</a></li> -->
                 <li><a href="/wp-admin/admin.php?page=a4n-chariin-mail-editor">メール編集</a></li>
             </ul>
         </div>
@@ -138,13 +138,13 @@ function my_sub_menu () {
 
 add_action( 'admin_init', 'post_register_api_key_handler' );
 function post_register_api_key_handler() {
-    // var_dump($_POST);
     if ( isset( $_POST['create_api_key'] ) ) {
         post_api_key();
     } elseif( isset( $_POST['test_api_key'] ) ) {
         test_api_key();
     }
 }
+
 
 function test_api_key() {
 

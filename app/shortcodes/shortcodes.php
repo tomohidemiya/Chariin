@@ -23,16 +23,19 @@ function checkout_form_short_code() {
   $str =
 <<<EOD
 <form action="/pay" method="post">
-<script
-type="text/javascript"
-src="https://checkout.pay.jp/"
-class="payjp-button"
-data-key="pk_test_0383a1b8f91e8a6e3ea0e2a9"
-data-on-created="onCreated"
-data-text="カード情報の入力"
-data-submit-text="支払う"
-data-partial="false">
-</script>
+    <script
+        type="text/javascript"
+        src="https://checkout.pay.jp/"
+        class="payjp-button"
+        data-key="pk_test_0383a1b8f91e8a6e3ea0e2a9"
+        data-on-created="onCreated"
+        data-text="カード情報の入力"
+        data-submit-text="支払う"
+        data-partial="false">
+    </script>
+    <input type="hidden" name="email" value="">
+    <input type="hidden" name="userid" value="">
+    <input type="hidden" name="testmode" value="">
 </form>
 EOD;
   return $str;

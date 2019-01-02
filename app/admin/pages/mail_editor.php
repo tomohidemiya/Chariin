@@ -1,4 +1,24 @@
 <?php
+add_action( 'admin_init', 'a4n_post_update_mail_template' );
+function a4n_post_update_mail_template() {
+    if ( isset( $_GET['page']) && $_GET['page'] == 'a4n-chariin-mail-editor' ) {
+		if ( isset( $_POST['mail_content']) ) {
+			// POSTの時の処理する
+			$category = $_POST['a4n_mail_category'];
+			$from = $_POST['a4n_mail_from'];
+			$cc = $_POST['a4n_mail_cc'];
+			$bcc = $_POST['a4n_mail_bcc'];
+			$subject = $_POST['a4n_mail_subject'];
+			$mail_body = $_POST['a4n_mail_content'];
+			// $headers = $_POST['a4n_mail_additional_headers'];
+			// $attach = $_POST['a4n_mail_attachments'];
+		} else {
+			// GETの時の処理をする（これはいらんか）
+
+		}
+    } 
+}
+
 function a4n_chariin_mail_editor() {
 	?>
 	<div class="wrap">
@@ -8,38 +28,25 @@ function a4n_chariin_mail_editor() {
 			クレジットカードのように領収書を発行できないサービスの場合、メールを返送することによって<br />
 			領収書の代わりになりますので、メール内容を設定してください。
         </p>
-		<form action="post.php">
+		<form id="mail_edit_form" method="post" action="">
 			<!-- <input type="hidden" id=""> -->
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder columns-2" style="margin-right: 300px;	">
 					<div id="post-body-content" style="position: relative;">
-						<div id="titlediv">
-							<div id="titlewrap">
-								<label class="" id="title-prompt-text" for="title">タイトル</label>
-								<input type="text" name="post_title" size="30" value="" id="title" spellcheck="true" autocomplete="off">
-							</div>
-							<div class="inside">
-								<div id="edit-slug-box" class="hide-if-no-js"></div>
-							</div>
-							<input type="hidden" id="samplepermalinknonce" name="samplepermalinknonce" value="5c1ec31a03">
-						</div>
 						<div id="postdivrich" class="postarea wp-editor-expand">
 							<div id="wp-content-wrap" class="wp-core-ui wp-editor-wrap html-active has-dfw" style="padding-top: 55px;">
 								<link rel="stylesheet" id="editor-buttons-css" href="/wp-includes/css/editor.min.css?ver=4.9.8" type="text/css" media="all">
 
-								<div id="wp-content-editor-tools" class="wp-editor-tools hide-if-no-js" style="position: absolute; top: 0px; width: 938px;">
+								<div id="wp-content-editor-tools" class="wp-editor-tools hide-if-no-js" style="position: absolute; top: 0px; width: 100%;">
 									<div id="wp-content-media-buttons" class="wp-media-buttons">
 										<button type="button" id="insert-media-button" class="button insert-media add_media" data-editor="content">
-											<span class="wp-media-buttons-icon"></span> メディアの追加
+											<span class="wp-media-buttons-icon"></span> 添付データの追加
 										</button>
 									</div>
-									<div class="wp-editor-tabs">
-										<button type="button" id="content-tmce" class="wp-switch-editor switch-tmce" data-wp-editor-id="content">ビジュアル</button>
-										<button type="button" id="content-html" class="wp-switch-editor switch-html" data-wp-editor-id="content">テキスト</button>
-									</div>
+									
 								</div>
-								<div id="wp-content-editor-container" class="wp-editor-container">
-									<div id="ed_toolbar" class="quicktags-toolbar" style="position: absolute; top: 0px; width: 898px;">
+								<div id="wp-content-editor-container">
+									<!-- <div id="ed_toolbar" class="quicktags-toolbar" style="position: absolute; top: 0px; width: 100%; padding: 0;">
 										<input type="button" id="qt_content_strong" class="ed_button button button-small" aria-label="Bold" value="b">
 										<input type="button" id="qt_content_em" class="ed_button button button-small" aria-label="Italic" value="i">
 										<input type="button" id="qt_content_link" class="ed_button button button-small" aria-label="Insert link" value="link">
@@ -54,8 +61,78 @@ function a4n_chariin_mail_editor() {
 										<input type="button" id="qt_content_more" class="ed_button button button-small" aria-label="Insert Read More tag" value="more">
 										<input type="button" id="qt_content_close" class="ed_button button button-small" title="Close all open tags" value="close tags">
 										<button type="button" id="qt_content_dfw" class="ed_button qt-dfw" title="Distraction-free writing mode"></button>
-									</div>
-									<textarea class="wp-editor-area" style="height: 300px; margin-top: 37px;" autocomplete="off" cols="40" name="content" id="content"></textarea>
+									</div> -->
+									<table class="form-table">
+										<tbody>
+											<tr class="form-field form-required">
+												<th scope="row">
+													<label for="mail-from">
+														メールの種類
+														<span class="description">(必須)</span>
+													</label>
+												</th>
+												<td>
+													<select name="a4n_mail_category" id="mail-category">
+														<option value="deposit">決済完了時の証跡メール</option>
+														<option value="confirm">メールアドレス確認時のメール</option>
+													</select>
+												</td>
+											</tr>
+											<tr class="form-field form-required">
+												<th scope="row">
+													<label for="mail-from">
+														差出人
+														<span class="description">(必須)</span>
+													</label>
+												</th>
+												<td>
+													<input type="text" name="a4n_mail_from" id="mail-from" value="<?php echo('hoge') ?>">
+												</td>
+											</tr>
+											<tr class="form-field">
+												<th scope="row">
+													<label for="mail-cc">
+														CC
+													</label>
+												</th>
+												<td>
+													<input type="text" name="a4n_mail_cc" id="mail-cc" value="<?php echo('cc') ?>">
+												</td>
+											</tr>
+											<tr class="form-field">
+												<th scope="row">
+													<label for="mail-bcc">
+														BCC
+													</label>
+												</th>
+												<td>
+													<input type="text" name="a4n_mail_bcc" id="mail-bcc" value="<?php echo('bcc') ?>">
+												</td>
+											</tr>
+											<tr class="form-field">
+												<th scope="row">
+													<label for="mail-subject">
+														メール件名
+														<span class="description">(必須)</span>
+													</label>
+												</th>
+												<td>
+													<input type="text" name="a4n_mail_subject" id="mail-subject" value="<?php echo('subject') ?>">
+												</td>
+											</tr>
+											<tr class="form-field">
+												<th scope="row">
+													<label for="mail-content">
+														メール本文
+														<span class="description">(必須)</span>
+													</label>
+												</th>
+												<td>
+													<textarea id="mail-content" style="height: 300px;" autocomplete="off" cols="40" name="a4n_mail_content" id="mail_content"><?php echo('content') ?></textarea>
+												</td>
+											</tr>
+										</tbody>
+									</table>
 								</div>
 								<div class="uploader-editor" style="display: none;">
 									<div class="uploader-editor-content">
@@ -63,15 +140,6 @@ function a4n_chariin_mail_editor() {
 									</div>
 								</div>
 							</div>
-							<table id="post-status-info" style="">
-								<tbody>
-									<tr>
-										<td id="wp-word-count" class="hide-if-no-js">Word count: <span class="word-count">0</span></td>
-										<td class="autosave-info"><span class="autosave-message">&nbsp;</span></td>
-										<td id="content-resize-handle" class="hide-if-no-js"><br></td>
-									</tr>
-								</tbody>
-							</table>
 						</div>
 					</div>
 				</div>
@@ -91,9 +159,8 @@ function a4n_chariin_mail_editor() {
 												<input type="submit" name="save" id="save-post" value="Save Draft" class="button">
 												<span class="spinner"></span>
 											</div>
-											<div id="preview-action">
-												<a class="preview button" href="#" target="wp-preview-169" id="post-preview">Preview<span class="screen-reader-text"> (opens in a new window)</span></a>
-												<input type="hidden" name="wp-preview" id="wp-preview" value="">
+											<div id="test-mail-action">
+												<a class="test button" href="#" id="post-test-mail">Mail Test<span class="screen-reader-text"> (sends email to a your address)</span></a>
 											</div>
 											<div class="clear"></div>
 										</div>
@@ -116,89 +183,15 @@ function a4n_chariin_mail_editor() {
 
 											</div><!-- .misc-pub-section -->
 
-											<div class="misc-pub-section misc-pub-visibility" id="visibility">
-												Visibility: <span id="post-visibility-display">Public</span>
-												<a href="#visibility" class="edit-visibility hide-if-no-js" role="button"><span aria-hidden="true">Edit</span> <span class="screen-reader-text">Edit visibility</span></a>
-
-												<div id="post-visibility-select" class="hide-if-js">
-													<input type="hidden" name="hidden_post_password" id="hidden-post-password" value="">
-													<input type="checkbox" style="display:none" name="hidden_post_sticky" id="hidden-post-sticky" value="sticky">
-													<input type="hidden" name="hidden_post_visibility" id="hidden-post-visibility" value="public">
-													<input type="radio" name="visibility" id="visibility-radio-public" value="public" checked="checked"> <label for="visibility-radio-public" class="selectit">Public</label><br>
-													<span id="sticky-span"><input id="sticky" name="sticky" type="checkbox" value="sticky"> <label for="sticky" class="selectit">Stick this post to the front page</label><br></span>
-													<input type="radio" name="visibility" id="visibility-radio-password" value="password"> <label for="visibility-radio-password" class="selectit">Password protected</label><br>
-													<span id="password-span"><label for="post_password">Password:</label> <input type="text" name="post_password" id="post_password" value="" maxlength="255"><br></span>
-													<input type="radio" name="visibility" id="visibility-radio-private" value="private"> <label for="visibility-radio-private" class="selectit">Private</label><br>
-
-													<p>
-														<a href="#visibility" class="save-post-visibility hide-if-no-js button">OK</a>
-														<a href="#visibility" class="cancel-post-visibility hide-if-no-js button-cancel">Cancel</a>
-													</p>
-												</div>
-
-											</div><!-- .misc-pub-section -->
-
-											<div class="misc-pub-section curtime misc-pub-curtime">
-												<span id="timestamp">Publish <b>immediately</b></span>
-												<a href="#edit_timestamp" class="edit-timestamp hide-if-no-js" role="button"><span aria-hidden="true">Edit</span> <span class="screen-reader-text">Edit date and time</span></a>
-												<fieldset id="timestampdiv" class="hide-if-js">
-													<legend class="screen-reader-text">Date and time</legend>
-													<div class="timestamp-wrap">
-														<label><span class="screen-reader-text">Month</span>
-															<select id="mm" name="mm">
-																<option value="01" data-text="Jan">01-Jan</option>
-																<option value="02" data-text="Feb">02-Feb</option>
-																<option value="03" data-text="Mar">03-Mar</option>
-																<option value="04" data-text="Apr">04-Apr</option>
-																<option value="05" data-text="May">05-May</option>
-																<option value="06" data-text="Jun">06-Jun</option>
-																<option value="07" data-text="Jul">07-Jul</option>
-																<option value="08" data-text="Aug">08-Aug</option>
-																<option value="09" data-text="Sep">09-Sep</option>
-																<option value="10" data-text="Oct">10-Oct</option>
-																<option value="11" data-text="Nov" selected="selected">11-Nov</option>
-																<option value="12" data-text="Dec">12-Dec</option>
-															</select>
-														</label>
-														<label><span class="screen-reader-text">Day</span>
-															<input type="text" id="jj" name="jj" value="24" size="2" maxlength="2" autocomplete="off">
-														</label>,
-														<label>
-															<span class="screen-reader-text">Year</span><input type="text" id="aa" name="aa" value="2018" size="4" maxlength="4" autocomplete="off">
-														</label> @
-														<label>
-															<span class="screen-reader-text">Hour</span><input type="text" id="hh" name="hh" value="12" size="2" maxlength="2" autocomplete="off">
-														</label>:
-														<label>
-															<span class="screen-reader-text">Minute</span><input type="text" id="mn" name="mn" value="44" size="2" maxlength="2" autocomplete="off">
-														</label>
-													</div>
-													<input type="hidden" id="ss" name="ss" value="41">
-													<input type="hidden" id="hidden_mm" name="hidden_mm" value="11">
-													<input type="hidden" id="cur_mm" name="cur_mm" value="11">
-													<input type="hidden" id="hidden_jj" name="hidden_jj" value="24">
-													<input type="hidden" id="cur_jj" name="cur_jj" value="25">
-													<input type="hidden" id="hidden_aa" name="hidden_aa" value="2018">
-													<input type="hidden" id="cur_aa" name="cur_aa" value="2018">
-													<input type="hidden" id="hidden_hh" name="hidden_hh" value="12">
-													<input type="hidden" id="cur_hh" name="cur_hh" value="11">
-													<input type="hidden" id="hidden_mn" name="hidden_mn" value="44">
-													<input type="hidden" id="cur_mn" name="cur_mn" value="48">
-													<p>
-														<a href="#edit_timestamp" class="save-timestamp hide-if-no-js button">OK</a>
-														<a href="#edit_timestamp" class="cancel-timestamp hide-if-no-js button-cancel">Cancel</a>
-													</p>
-												</fieldset>
-											</div>
 											<div class="clear"></div>
 										</div>
 										<div id="major-publishing-actions">
 											<div id="delete-action">
-												<a class="submitdelete deletion" href="#">Move to Trash</a>
+												<a class="submitdelete deletion" href="#">Reset</a>
 											</div>
 											<div id="publishing-action">
 												<span class="spinner"></span>
-												<input name="original_publish" type="hidden" id="original_publish" value="Publish">
+												<!-- <input name="original_publish" type="hidden" id="original_publish" value="Publish"> -->
 												<input type="submit" name="publish" id="publish" class="button button-primary button-large" value="Publish">
 											</div>
 											<div class="clear"></div>
@@ -211,7 +204,6 @@ function a4n_chariin_mail_editor() {
 				</div>
 			</div>
 		</form>
-
     </div>
 	<?php
 	return '';
