@@ -1,18 +1,21 @@
 <?php
 add_action( 'admin_init', 'a4n_post_update_mail_template' );
 function a4n_post_update_mail_template() {
-    if ( isset( $_GET['page']) && $_GET['page'] == 'a4n-chariin-mail-editor' ) {
+	
+	if ( isset( $_GET['page']) && $_GET['page'] == 'a4n-chariin-mail-editor' ) {
 		if ( isset( $_POST['a4n_mail_category']) ) {
 			
 			// POSTの時の処理する
 			$category = $_POST['a4n_mail_category'];
-			$from = $_POST['a4n_mail_from'];
-			$cc = $_POST['a4n_mail_cc'];
-			$bcc = $_POST['a4n_mail_bcc'];
-			$subject = $_POST['a4n_mail_subject'];
-			$mail_body = $_POST['a4n_mail_content'];
+			$from = esc_html( $_POST['a4n_mail_from'] );
+			$cc = esc_html( $_POST['a4n_mail_cc'] );
+			$bcc = esc_html( $_POST['a4n_mail_bcc'] );
+			$subject = esc_html( $_POST['a4n_mail_subject'] );
+			$mail_body = nl2br($_POST['a4n_mail_content']);
 			// $headers = $_POST['a4n_mail_additional_headers'];
 			// $attach = $_POST['a4n_mail_attachments'];
+
+			$mail_body = esc_html( str_replace(array("\r\n", "\r", "\n"), '', $mail_body ) );
 
 			$mail_util = new A4N_C_MailUtil();
 			$mail_util->update_mail_template($category, $from, $cc, $bcc, $subject, $mail_body);
@@ -92,7 +95,7 @@ function a4n_chariin_mail_editor() {
 													</label>
 												</th>
 												<td>
-													<input type="text" name="a4n_mail_from" id="mail-from" value="<?php echo( $mail_content->a4n_from ) ?>">
+													<input type="text" name="a4n_mail_from" id="mail-from" value="<?php echo( htmlspecialchars_decode( $mail_content->a4n_from ) ) ?>">
 												</td>
 											</tr>
 											<tr class="form-field">
@@ -102,7 +105,7 @@ function a4n_chariin_mail_editor() {
 													</label>
 												</th>
 												<td>
-													<input type="text" name="a4n_mail_cc" id="mail-cc" value="<?php echo($mail_content->a4n_cc) ?>">
+													<input type="text" name="a4n_mail_cc" id="mail-cc" value="<?php echo( htmlspecialchars_decode( $mail_content->a4n_cc ) ) ?>">
 												</td>
 											</tr>
 											<tr class="form-field">
@@ -112,7 +115,7 @@ function a4n_chariin_mail_editor() {
 													</label>
 												</th>
 												<td>
-													<input type="text" name="a4n_mail_bcc" id="mail-bcc" value="<?php echo($mail_content->a4n_bcc) ?>">
+													<input type="text" name="a4n_mail_bcc" id="mail-bcc" value="<?php echo( htmlspecialchars_decode( $mail_content->a4n_bcc ) ) ?>">
 												</td>
 											</tr>
 											<tr class="form-field">
@@ -123,7 +126,7 @@ function a4n_chariin_mail_editor() {
 													</label>
 												</th>
 												<td>
-													<input type="text" name="a4n_mail_subject" id="mail-subject" value="<?php echo($mail_content->a4n_subject) ?>">
+													<input type="text" name="a4n_mail_subject" id="mail-subject" value="<?php echo( htmlspecialchars_decode( $mail_content->a4n_subject ) ) ?>">
 												</td>
 											</tr>
 											<tr class="form-field">
@@ -134,7 +137,7 @@ function a4n_chariin_mail_editor() {
 													</label>
 												</th>
 												<td>
-													<textarea id="mail-content" style="height: 300px;" autocomplete="off" cols="40" name="a4n_mail_content" id="mail_content"><?php echo($mail_content->a4n_mailbody) ?></textarea>
+													<textarea id="mail-content" style="height: 300px;" autocomplete="off" cols="40" name="a4n_mail_content" id="mail_content"><?php echo( preg_replace('/<br[[:space:]]*\/?[[:space:]]*>/i', "\n", htmlspecialchars_decode( $mail_content->a4n_mailbody ) ) ); ?></textarea>
 												</td>
 											</tr>
 										</tbody>

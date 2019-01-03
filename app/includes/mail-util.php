@@ -115,16 +115,13 @@ class A4N_C_MailUtil {
 
     public function get_mail_template_from_category($category) {
         if ( $category !== 'deposit' && $category !== 'confirm' ) {
-            return null;           
+            return null;
         }
 
         $args = array( 'post_type' => 'a4n_chariin' );
         $posts = get_posts( $args );
 
-        // var_dump($posts);
-
         foreach($posts as &$post) {
-            
             if ($post->post_name == $category) {
                 $subject = $post->post_title;
                 $mail_content = $post->post_content;
