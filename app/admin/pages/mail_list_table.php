@@ -30,8 +30,8 @@ class A4N_MAIL_LIST_TABLE extends WP_List_Table {
 	public function get_columns() {
         return array(
 			'cb'		=> '<input type="checkbox" />',
-			'key_type'	=> 'キーの種類',
-			'key_name'	=> 'APIキー名',
+			'key_type'	=> 'メールカテゴリ',
+			'key_name'	=> 'メール件名',
 	    );
     }
 
@@ -50,15 +50,15 @@ class A4N_MAIL_LIST_TABLE extends WP_List_Table {
 	 * @return array
 	 */
 	protected function get_bulk_actions() {
-		return array( 'delete-selected' => __( 'Delete' ) );
+		return array( 'reset-selected' => __( 'Reset' ) );
 	}
     
-    	/**
+	/**
 	 * 表示するデータを準備する
 	 */
-	public function prepare_items( $api_key_list = null ) {
+	public function prepare_items( $mail_templates = null ) {
 
-        if ( !is_null( $api_key_list ) ) {
+        if ( !is_null( $mail_templates ) ) {
 			$columns = $this->get_columns();
 			$hidden = array();
 			$sortable = $this->get_sortable_columns();
@@ -71,10 +71,10 @@ class A4N_MAIL_LIST_TABLE extends WP_List_Table {
 			 */
 			$this->process_bulk_action();
 
-			$this->items = $api_key_list;
+			$this->items = $mail_templates;
 
             $this->set_pagination_args ( array(
-                'total_items' => count( $api_key_list ),
+                'total_items' => count( $mail_templates ),
                 'per_page' => 10,
             ) );
 		}
@@ -84,7 +84,7 @@ class A4N_MAIL_LIST_TABLE extends WP_List_Table {
 	function process_bulk_action() {
 
 		//Detect when a bulk action is being triggered...
-		if( 'delete'===$this->current_action() ) {
+		if( 'reset'===$this->current_action() ) {
 
 			$target_key_list = get_option( 'a4n_pay_api_keys' );
 
@@ -98,7 +98,7 @@ class A4N_MAIL_LIST_TABLE extends WP_List_Table {
 		} elseif ( 'edit'===$this->current_action() ) {
 
 
-		} elseif ( 'delete-selected'===$this->current_action() ) {
+		} elseif ( 'reset-selected'===$this->current_action() ) {
 			$target_key_list = get_option( 'a4n_pay_api_keys' );
 
 			$new_array = array_filter( $target_key_list, function( $item ) {
@@ -115,10 +115,10 @@ class A4N_MAIL_LIST_TABLE extends WP_List_Table {
 
 	protected function get_sortable_columns() {
 		return array(
-				'no'	=> array( 'no', true ),
-				'key_type'	=> 'key_type',
-				'key_name'	=> 'key_name',
-			 );
+			'no'	=> array( 'no', true ),
+			'key_type'	=> 'key_type',
+			'key_name'	=> 'key_name',
+		);
     }
     
     /**
@@ -130,8 +130,8 @@ class A4N_MAIL_LIST_TABLE extends WP_List_Table {
 		list( $columns, $hidden, $sortable, $primary ) = $this->get_column_info();
 		$columns = array(
 			'cb'		=> '<input type="checkbox" />',
-			'key_type'	=> 'キーの種類',
-			'key_name'	=> 'APIキー名',
+			'key_type'	=> 'メールカテゴリ',
+			'key_name'	=> 'メール件名',
 	    );
         ?>
         <tr>
@@ -173,23 +173,16 @@ class A4N_MAIL_LIST_TABLE extends WP_List_Table {
 		 //Build row actions
 		$actions = array(
 			'edit' => sprintf('<a href="?page=%s&action=%s&key_type=%s">修正する</a>',$_REQUEST['page'],'edit',$type),
-			'delete' => sprintf('<a href="?page=%s&action=%s&key_type=%s">削除する</a>',$_REQUEST['page'],'delete',$type),
+			'reset' => sprintf('<a href="?page=%s&action=%s&key_type=%s">初期化する</a>',$_REQUEST['page'],'reset',$type),
 		);
-
 
 		$type_name = '';
 		switch ( $type ) {
-			case '0':
-				$type_name = 'テスト秘密鍵';
+			case 'deposit':
+				$type_name = '決済完了時の証跡メール';
 				break;
-			case '1':
-				$type_name = 'テスト公開鍵';
-				break;
-			case '2':
-				$type_name = '本番秘密鍵';
-				break;
-			case '3':
-				$type_name = '本番公開鍵';
+			case 'confirm':
+				$type_name = 'メールアドレス確認時のメール';
 				break;
 		}
 
@@ -199,6 +192,4 @@ class A4N_MAIL_LIST_TABLE extends WP_List_Table {
 			/*$3%s*/ $this->row_actions($actions)
 		);
 	}
-
-
 }

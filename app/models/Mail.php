@@ -1,13 +1,22 @@
 <?php
 class A4n_Mail {
     private $subject;
-    private $description = '';
+    private $mail_body = '';
     private $to = [];
     private $cc = [];
     private $bcc = [];
+    private $from = '';
 
     public function __constructor() {
 
+    }
+
+    public function setFrom($from) {
+        $this->$from = htmlspecialchars($from);
+    }
+
+    public function getFrom() {
+        return $this->$from;
     }
 
     public function setSubject($subject) {
@@ -63,17 +72,16 @@ class A4n_Mail {
         }
     }
 
-    public function setDescription($description)
-    {
-        if(is_null($description) || $description == '') {
+    public function setMailBody($mail_body) {
+        if(is_null($mail_body) || $mail_body == '') {
             return;
         }
-        $this->$description = htmlspecialchars($description);
+        $this->$mail_body = htmlspecialchars($mail_body);
     }
 
 
-    public function getDescription() {
-        return $this->$description;
+    public function getMailBody() {
+        return $this->$mail_body;
     }
 
 }

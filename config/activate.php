@@ -23,29 +23,42 @@ function a4n_chariin_register_option_keys() {
 }
 
 function a4n_chariin_register_mail_template() {
-    $post_content = 'テストです';
+    $admin_user = wp_get_current_user();
+    
 
+    $from = '"a4n_from":"'. $admin_user->display_name .' <' . $admin_user->user_email . '>"';
+    $cc = '"a4n_cc":"' . $admin_user->user_email . '"';
+    $bcc = '"a4n_bcc":"' . $admin_user->user_email . '"'; 
+    $mail_body = '"a4n_mailbody":"テストです"';
+    
+    
+    $subject = '"a4n_subject":"【ご購入のお礼】"'; 
+    $post_content = '{' . $from . ',' . $cc . ',' . $bcc . ',' . $subject . ',' . $mail_body . '}';
     $post_id_deposit = wp_insert_post( array(
         'post_type' => 'a4n_chariin',
+        'post_name' => 'deposit',
         'post_status' => 'publish',
         'post_title' => '【ご購入のお礼】',
         'post_content' => trim( $post_content ),
     ) );
 
+    $subject = '"a4n_subject":"【決済専用サイトのご案内】"'; 
+    $post_content = '{' . $from . ',' . $cc . ',' . $bcc . ',' . $subject . ',' . $mail_body . '}';
     $post_id_confirm = wp_insert_post( array(
         'post_type' => 'a4n_chariin',
+        'post_name' => 'confirm',
         'post_status' => 'publish',
-        'post_title' => '【決済サイトのご案内】',
+        'post_title' => '【決済専用サイトのご案内】',
         'post_content' => trim( $post_content ),
     ) );
     
-    $props = get_properties();
+    // $props = get_properties();
 
-    foreach ( $props as $prop => $value ) {
-        update_post_meta( $post_id_deposit, '_' . $prop,
-            normalize_newline_deep( $value ) );
-    }
-    update_post_meta( $post_id, '_locale', get_user_locale() );
+    // foreach ( $props as $prop => $value ) {
+    //     update_post_meta( $post_id_deposit, '_' . $prop,
+    //         normalize_newline_deep( $value ) );
+    // }
+    // update_post_meta( $post_id, '_locale', get_user_locale() );
 }
 
 function normalize_newline_deep( $arr, $to = "\n" ) {

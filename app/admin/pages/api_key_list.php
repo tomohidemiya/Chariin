@@ -11,7 +11,6 @@ if(!class_exists('WP_List_Table')){
 */
 class A4N_PAY_Api_Key_List_Table extends WP_List_Table {
 
-
 	/**
 	 * 初期化時の設定を行う
 	 */

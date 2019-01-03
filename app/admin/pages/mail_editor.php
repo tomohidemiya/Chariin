@@ -2,7 +2,8 @@
 add_action( 'admin_init', 'a4n_post_update_mail_template' );
 function a4n_post_update_mail_template() {
     if ( isset( $_GET['page']) && $_GET['page'] == 'a4n-chariin-mail-editor' ) {
-		if ( isset( $_POST['mail_content']) ) {
+		if ( isset( $_POST['a4n_mail_category']) ) {
+			
 			// POSTの時の処理する
 			$category = $_POST['a4n_mail_category'];
 			$from = $_POST['a4n_mail_from'];
@@ -16,17 +17,18 @@ function a4n_post_update_mail_template() {
 			$mail_util = new A4N_C_MailUtil();
 			$mail_util->update_mail_template($category, $from, $cc, $bcc, $subject, $mail_body);
 
-		} else {
-			// GETの時の処理をする（これはいらんか）
-
 		}
     } 
 }
 
 function a4n_chariin_mail_editor() {
+	$category = 'deposit';
+	$mail_util = new A4N_C_MailUtil();
+	$mail_content = json_decode($mail_util->get_mail_template_from_category($category));
+
 	?>
 	<div class="wrap">
-        <h2>メール編集</h2>
+        <h2>メールテンプレートの編集</h2>
         <p>
             安全な決済のために、顧客へのメール送付は必須です。<br />
 			クレジットカードのように領収書を発行できないサービスの場合、メールを返送することによって<br />
@@ -38,17 +40,17 @@ function a4n_chariin_mail_editor() {
 				<div id="post-body" class="metabox-holder columns-2" style="margin-right: 300px;	">
 					<div id="post-body-content" style="position: relative;">
 						<div id="postdivrich" class="postarea wp-editor-expand">
-							<div id="wp-content-wrap" class="wp-core-ui wp-editor-wrap html-active has-dfw" style="padding-top: 55px;">
+							<div id="wp-content-wrap" class="wp-core-ui wp-editor-wrap html-active has-dfw">
 								<link rel="stylesheet" id="editor-buttons-css" href="/wp-includes/css/editor.min.css?ver=4.9.8" type="text/css" media="all">
 
-								<div id="wp-content-editor-tools" class="wp-editor-tools hide-if-no-js" style="position: absolute; top: 0px; width: 100%;">
+								<!-- <div id="wp-content-editor-tools" class="wp-editor-tools hide-if-no-js" style="position: absolute; top: 0px; width: 100%;">
 									<div id="wp-content-media-buttons" class="wp-media-buttons">
 										<button type="button" id="insert-media-button" class="button insert-media add_media" data-editor="content">
 											<span class="wp-media-buttons-icon"></span> 添付データの追加
 										</button>
 									</div>
 									
-								</div>
+								</div> -->
 								<div id="wp-content-editor-container">
 									<!-- <div id="ed_toolbar" class="quicktags-toolbar" style="position: absolute; top: 0px; width: 100%; padding: 0;">
 										<input type="button" id="qt_content_strong" class="ed_button button button-small" aria-label="Bold" value="b">
@@ -77,8 +79,8 @@ function a4n_chariin_mail_editor() {
 												</th>
 												<td>
 													<select name="a4n_mail_category" id="mail-category">
-														<option value="deposit">決済完了時の証跡メール</option>
-														<option value="confirm">メールアドレス確認時のメール</option>
+														<option value="deposit" <?php echo( ($category === 'deposit') ? 'selected' : '' ); ?> >決済完了時の証跡メール</option>
+														<option value="confirm" <?php echo( ($category === 'confirm') ? 'selected' : '' ); ?> >メールアドレス確認時のメール</option>
 													</select>
 												</td>
 											</tr>
@@ -90,7 +92,7 @@ function a4n_chariin_mail_editor() {
 													</label>
 												</th>
 												<td>
-													<input type="text" name="a4n_mail_from" id="mail-from" value="<?php echo('hoge') ?>">
+													<input type="text" name="a4n_mail_from" id="mail-from" value="<?php echo( $mail_content->a4n_from ) ?>">
 												</td>
 											</tr>
 											<tr class="form-field">
@@ -100,7 +102,7 @@ function a4n_chariin_mail_editor() {
 													</label>
 												</th>
 												<td>
-													<input type="text" name="a4n_mail_cc" id="mail-cc" value="<?php echo('cc') ?>">
+													<input type="text" name="a4n_mail_cc" id="mail-cc" value="<?php echo($mail_content->a4n_cc) ?>">
 												</td>
 											</tr>
 											<tr class="form-field">
@@ -110,7 +112,7 @@ function a4n_chariin_mail_editor() {
 													</label>
 												</th>
 												<td>
-													<input type="text" name="a4n_mail_bcc" id="mail-bcc" value="<?php echo('bcc') ?>">
+													<input type="text" name="a4n_mail_bcc" id="mail-bcc" value="<?php echo($mail_content->a4n_bcc) ?>">
 												</td>
 											</tr>
 											<tr class="form-field">
@@ -121,7 +123,7 @@ function a4n_chariin_mail_editor() {
 													</label>
 												</th>
 												<td>
-													<input type="text" name="a4n_mail_subject" id="mail-subject" value="<?php echo('subject') ?>">
+													<input type="text" name="a4n_mail_subject" id="mail-subject" value="<?php echo($mail_content->a4n_subject) ?>">
 												</td>
 											</tr>
 											<tr class="form-field">
@@ -132,7 +134,7 @@ function a4n_chariin_mail_editor() {
 													</label>
 												</th>
 												<td>
-													<textarea id="mail-content" style="height: 300px;" autocomplete="off" cols="40" name="a4n_mail_content" id="mail_content"><?php echo('content') ?></textarea>
+													<textarea id="mail-content" style="height: 300px;" autocomplete="off" cols="40" name="a4n_mail_content" id="mail_content"><?php echo($mail_content->a4n_mailbody) ?></textarea>
 												</td>
 											</tr>
 										</tbody>
