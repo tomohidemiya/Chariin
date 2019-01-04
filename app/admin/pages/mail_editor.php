@@ -2,7 +2,9 @@
 add_action( 'admin_init', 'a4n_post_update_mail_template' );
 function a4n_post_update_mail_template() {
 	
-	if ( isset( $_GET['page']) && $_GET['page'] == 'a4n-chariin-mail-editor' ) {
+	// $mail_ustil = new A4N_C_MailUtil();
+	// $mail_ustil->update_mail_template('deposit', '', '', '', 'subject', 'body');
+    if ( isset( $_GET['page']) && $_GET['page'] == 'a4n-chariin-mail-editor' ) {
 		if ( isset( $_POST['a4n_mail_category']) ) {
 			
 			// POSTの時の処理する
@@ -28,10 +30,17 @@ function a4n_chariin_mail_editor() {
 	$category = 'deposit';
 	$mail_util = new A4N_C_MailUtil();
 	$mail_content = json_decode($mail_util->get_mail_template_from_category($category));
-
 	?>
+
 	<div class="wrap">
         <h2>メールテンプレートの編集</h2>
+
+		<div id="message" class="notice-info notice" style="<?php echo(isset( $_POST['a4n_mail_category']) ? '' : 'display:none') ?>">
+			<p><strong>更新しました:</strong></p>
+			<p>
+				メールテンプレートの修正が完了しました。
+			</p>
+		</div>
         <p>
             安全な決済のために、顧客へのメール送付は必須です。<br />
 			クレジットカードのように領収書を発行できないサービスの場合、メールを返送することによって<br />
@@ -75,15 +84,15 @@ function a4n_chariin_mail_editor() {
 										<tbody>
 											<tr class="form-field form-required">
 												<th scope="row">
-													<label for="mail-from">
+													<label for="mail-category">
 														メールの種類
-														<span class="description">(必須)</span>
+														<span class="description">(変更不可)</span>
 													</label>
 												</th>
 												<td>
-													<select name="a4n_mail_category" id="mail-category">
-														<option value="deposit" <?php echo( ($category === 'deposit') ? 'selected' : '' ); ?> >決済完了時の証跡メール</option>
-														<option value="confirm" <?php echo( ($category === 'confirm') ? 'selected' : '' ); ?> >メールアドレス確認時のメール</option>
+													<select name="a4n_mail_category" id="mail-category" >
+														<option value="deposit" <?php echo( ($category === 'deposit') ? 'selected' : 'disabled' ); ?> >決済完了時の証跡メール</option>
+														<option value="confirm" <?php echo( ($category === 'confirm') ? 'selected' : 'disabled' ); ?> >メールアドレス確認時のメール</option>
 													</select>
 												</td>
 											</tr>
@@ -102,6 +111,7 @@ function a4n_chariin_mail_editor() {
 												<th scope="row">
 													<label for="mail-cc">
 														CC
+														<span class="description">(任意)</span>
 													</label>
 												</th>
 												<td>
@@ -112,6 +122,7 @@ function a4n_chariin_mail_editor() {
 												<th scope="row">
 													<label for="mail-bcc">
 														BCC
+														<span class="description">(任意)</span>
 													</label>
 												</th>
 												<td>
