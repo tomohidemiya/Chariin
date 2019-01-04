@@ -41,12 +41,13 @@
 			$response->set_status(200);
 			$domain = ( empty( $_SERVER["HTTPS"] ) ? "http://" : "https://" ) . $_SERVER["HTTP_HOST"];
 			$response->header( 'Location', $domain );
-			// TODO 適切な内容に変える
+			
+			// TODO: Future Function: Async対応
+			$mailUtil = new A4N_C_MailUtil();
+			$mailUtil->send_mail_sync('deposit', $email);
+			
+			// TODO: 適切な内容に変える
 			$response->set_data( a4n_create_res_data_deposit( $ch, True ) );
-
-			// アーキテクチャを考える
-			send_mail_deposit();
-
 		} catch( Exception $e ) {
 			$response->set_status(500);
 			$domain = ( empty( $_SERVER["HTTPS"] ) ? "http://" : "https://" ) . $_SERVER["HTTP_HOST"];
@@ -70,8 +71,4 @@
 			'pay' =>  $ch
 		);
 		return $data;
-	}
-
-	function send_mail_deposit() {
-		wp_mail( 't.miya19890131@gmail.com', '頑張れ', 'なんとかしろ' );
 	}

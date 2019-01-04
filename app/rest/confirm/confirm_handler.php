@@ -11,6 +11,7 @@
 		$card_cvc = (int)$post_req["cvc"];
 		$amount = (int)$post_req["amount"];
 		$card_name = $post_req["name"];
+		$email = $post_req["email"];
 		$is_prod = false;
 
 		if ( $post_req["prod_mode"] !== '' && $post_req["prod_mode"] === 'true' ) {
@@ -29,12 +30,13 @@
 			$response->set_status(200);
 			$domain = ( empty( $_SERVER["HTTPS"] ) ? "http://" : "https://" ) . $_SERVER["HTTP_HOST"];
 			$response->header( 'Location', $domain );
+			
+			// アーキテクチャを考える
+			$mailUtil = new A4N_C_MailUtil();
+			$mailUtil->send_mail_sync('confirm', $email);
+			
 			// TODO 適切な内容に変える
 			$response->set_data( a4n_create_res_data_payment( $user_id ) );
-
-			// アーキテクチャを考える
-			send_mail();
-
 		} catch( Exception $e ) {
 			$response->set_status(500);
 			$domain = ( empty( $_SERVER["HTTPS"] ) ? "http://" : "https://" ) . $_SERVER["HTTP_HOST"];
@@ -53,9 +55,4 @@
 			)
 		);
 		return json_encode($data);
-	}
-
-    // FIXME!! 多分消す
-	function send_mail_payment() {
-		wp_mail( 't.miya19890131@gmail.com', '頑張れ', 'なんとかしろ' );
 	}
