@@ -46,28 +46,25 @@
 			$mail_util->send_mail_sync('deposit', $email);
 			
 			// TODO: 適切な内容に変える
-			$response->set_data( a4n_create_res_data_deposit( $ch, True ) );
+			$response->set_data( a4n_create_res_data_deposit( 'success', '' ) );
 		} catch( Exception $e ) {
 			$response->set_status(500);
 			$domain = ( empty( $_SERVER["HTTPS"] ) ? "http://" : "https://" ) . $_SERVER["HTTP_HOST"];
 			$response->header( 'Location', $domain );
-			$response->set_data( a4n_create_res_data_deposit( $e->getMessage(), False ) );
+			$response->set_data( a4n_create_res_data_deposit( 'fail', $e->getMessage() ) );
 		} finally {
 
 		}
 		return $response;
 	}
 
-	function a4n_create_res_data_deposit( $ch, $status ) {
-		$status_str = '';
-		if ( $status == True ) {
-			$status_str = 'success';
-		} else {
-			$status_str = 'fail';
-		}
+	function a4n_create_res_data_deposit( $status, $message ) {
+		
 		$data = array(
-			'status' => $status_str,
-			'pay' =>  $ch
+			'deposit' => array(
+				'status' => $status,
+				'message' =>  $message
+			)
 		);
 		return $data;
 	}
