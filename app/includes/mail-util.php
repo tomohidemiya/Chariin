@@ -53,55 +53,34 @@ class A4N_C_MailUtil {
 
     }
 
-    public function send_mail_sync($category, $to) {
+    public function send_mail_sync($category, $to, $replacer = array()) {
         $headers = array();
-        switch( $category ) {
-            case 'deposit':
-                $from = $mail_deposit->getFrom();
-                if ( $from !== '' ) {
-                    array_push($headers, 'From: ' . $from);
-                }
 
-                $ccs = $mail_deposit->getBccArray();
-                foreach($ccs as &$cc) {
-                    array_push($headers, 'Cc: ' . $cc);
-                }
+        $args = array( 'post_type' => 'a4n_chariin' );
+        $posts = get_posts( $args );
 
-                $bccs = $mail_deposit->getCcArray();
-                foreach($bccs as &$bcc) {
-                    array_push($headers, 'Bcc: ' . $bcc);
-                }
+        // var_dump($posts);
 
-                $subject = $mail_deposit->getSubject();
+        $mail_content = json_decode($this->get_mail_template_from_category($category));
+        
+        $from = htmlspecialchars_decode( $mail_content->a4n_from );
+        if ( $from !== '' ) {
+            array_push($headers, 'From: ' . $from);
+        }
+        $ccs = explode( ';', htmlspecialchars_decode( $mail_content->a4n_cc ) );
+        foreach($ccs as &$cc) {
+            array_push($headers, 'Cc: ' . $cc);
+        }
+        $bccs = explode( ';', htmlspecialchars_decode( $mail_content->a4n_bcc ) );
+        foreach($bccs as &$bcc) {
+            array_push($headers, 'Bcc: ' . $bcc);
+        }
+        $subject = htmlspecialchars_decode( $mail_content->a4n_subject );
+        $mail_body = preg_replace( '/<br[[:space:]]*\/?[[:space:]]*>/i', '\n', htmlspecialchars_decode( $mail_content->a4n_mailbody ) );
 
-                $mail_body = $mail_deposit->getMailBody();
+        // TODO: メール本文の置換処理
 
-                wp_mail($to, $subject, $mail_body, $headers);
-                break;
-
-            case 'confirm':
-                $from = $mail_confirm->getFrom();
-                if ( $from !== '' ) {
-                    array_push($headers, 'From: ' . $from);
-                }
-
-                $ccs = $mail_confirm->getBccArray();
-                foreach($ccs as &$cc) {
-                    array_push($headers, 'Cc: ' . $cc);
-                }
-
-                $bccs = $mail_confirm->getCcArray();
-                foreach($bccs as &$bcc) {
-                    array_push($headers, 'Bcc: ' . $bcc);
-                }
-
-                $subject = $mail_confirm->getSubject();
-
-                $mail_body = $mail_confirm->getMailBody();
-
-                wp_mail($to, $subject, $mail_body, $headers);
-                break;
-        };
+        wp_mail($to, $subject, $mail_body, $headers);
     }
     
     // Future function
