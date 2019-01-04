@@ -33,8 +33,8 @@ function a4n_admin_menu () {
         __('APIキー登録', 'my-custom-admin'),
         __('APIキー登録', 'my-custom-admin'),
         'manage_options',
-        'my-sub-menu',
-        'my_sub_menu'
+        'a4n-register-api-key',
+        'a4n_register_api_key'
      );
 
      add_submenu_page(
@@ -60,7 +60,7 @@ function my_custom_admin () {
 	        <h2 class="title">Pay.jpメニュー</h2>
 	        <ul>
                 <li><a href="/wp-admin/admin.php?page=a4n-key-list-menu">APIキーの登録</a></li>
-                <!-- <li><a href="/wp-admin/admin.php?page=my-sub-menu">APIキー登録</a></li> -->
+                <!-- <li><a href="/wp-admin/admin.php?page=a4n-register-api-key">APIキー登録</a></li> -->
                 <li><a href="/wp-admin/admin.php?page=a4n-chariin-mail-editor">メール編集</a></li>
             </ul>
         </div>
@@ -68,7 +68,7 @@ function my_custom_admin () {
     <?php
 }
 
-function my_sub_menu () {
+function a4n_register_api_key () {
     ?>
     <div class="wrap">
         <h2>APIキー登録</h2>
@@ -104,7 +104,7 @@ function my_sub_menu () {
         ?>
         <form id="api_key_form" method="post" action="">
             <?php
-                wp_nonce_field( 'my-nonce-key', 'my_sub_menu' );
+                wp_nonce_field( 'my-nonce-key', 'a4n_register_api_key' );
                 $registered_api_keys = get_option( 'a4n_pay_api_keys' );
             ?>
             <table class="form-table">
@@ -162,9 +162,9 @@ function post_api_key() {
 
     // list とる
     $api_key_list = get_option( 'a4n_pay_api_keys', array() );
-    if ( isset( $_POST['my_sub_menu'] ) && $_POST['my_sub_menu'] ) {
+    if ( isset( $_POST['a4n_register_api_key'] ) && $_POST['a4n_register_api_key'] ) {
 
-        if ( check_admin_referer( 'my-nonce-key', 'my_sub_menu' ) ) {
+        if ( check_admin_referer( 'my-nonce-key', 'a4n_register_api_key' ) ) {
 
             $e = new WP_Error();
 
@@ -225,7 +225,7 @@ function a4n_pay_key_list_menu() {
     ?>
     <div class="wrap">
         <h1 class="wp-heading-inline">APIキーリスト</h1>
-        <a href="/wp-admin/admin.php?page=my-sub-menu" class="page-title-action">新規追加</a>
+        <a href="/wp-admin/admin.php?page=a4n-register-api-key" class="page-title-action">新規追加</a>
         <p>
             現在登録されているAPIキーの一覧を表示しています。<br>
             APIキーの名称は厳重に管理すべきデータであるため、一部のみ表示しています。

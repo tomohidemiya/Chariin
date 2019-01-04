@@ -25,7 +25,6 @@
 		try {
 
 			// TODO: ハッシュ値の検証する
-
 			$payjp_util = new A4N_PAY_Payjp_Util();
 			if ($is_prod) {
 				// FIXME なぜか必ず200が帰る。。。
@@ -43,8 +42,8 @@
 			$response->header( 'Location', $domain );
 			
 			// TODO: Future Function: Async対応
-			$mailUtil = new A4N_C_MailUtil();
-			$mailUtil->send_mail_sync('deposit', $email);
+			$mail_util = new A4N_C_MailUtil();
+			$mail_util->send_mail_sync('deposit', $email);
 			
 			// TODO: 適切な内容に変える
 			$response->set_data( a4n_create_res_data_deposit( $ch, True ) );
