@@ -19,7 +19,13 @@ function a4n_chariin_register_post_mail_type() {
 }
 
 function a4n_chariin_register_option_keys() {
-
+    $api_keys = array(
+        [ 'key_type' => '0', 'key_name' => '' ],
+        [ 'key_type' => '1', 'key_name' => '' ],
+        [ 'key_type' => '2', 'key_name' => '' ],
+        [ 'key_type' => '3', 'key_name' => '' ]
+    );
+    update_option('a4n_pay_api_keys', $api_keys);
 }
 
 function a4n_chariin_register_mail_template() {
@@ -51,14 +57,6 @@ function a4n_chariin_register_mail_template() {
         'post_title' => '【決済専用サイトのご案内】',
         'post_content' => trim( $post_content ),
     ) );
-    
-    // $props = get_properties();
-
-    // foreach ( $props as $prop => $value ) {
-    //     update_post_meta( $post_id_deposit, '_' . $prop,
-    //         normalize_newline_deep( $value ) );
-    // }
-    // update_post_meta( $post_id, '_locale', get_user_locale() );
 }
 
 function normalize_newline_deep( $arr, $to = "\n" ) {
