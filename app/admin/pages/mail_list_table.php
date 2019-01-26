@@ -41,7 +41,7 @@ class A4N_MAIL_LIST_TABLE extends WP_List_Table {
 	 * @return string
 	 */
 	protected function get_primary_column_name() {
-        return 'key_name';
+        return 'key_type';
 	}
 
     /**
